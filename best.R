@@ -1,8 +1,8 @@
 best <- function(state, outcome) {
   ## Read outcome data
   setwd("C:/git/ProgrammingAssignment3")
-  #d <-read.csv("outcome-of-care-measures.csv",colClasses="character") #start w/out colClasses="character"
-  d <-read.csv("sample.csv",colClasses="character") #start w/out colClasses="character"
+  d <-read.csv("outcome-of-care-measures.csv",colClasses="character") #start w/out colClasses="character"
+  #d <-read.csv("sample.csv",colClasses="character") #start w/out colClasses="character"
   
   ## Check that state and outcome are valid; make a state list for splitting later
   sl <- d[,7]
@@ -25,7 +25,7 @@ best <- function(state, outcome) {
   minval <- min(ss[,colnbr])
   test <- ss[,colnbr] == minval
   result <- subset(ss[,2], test)
-  
+  result <- sort(result)
   # Handle duplicates by sorting
-  result
+  result[1]
 }
