@@ -22,7 +22,7 @@ best <- function(state, outcome) {
   ## split the data frame d by state list
   sd <- split(d,sl)  # list of lists of length 1 containing data.frames
   ss <- (sd[[state]]) ## get at the data frame at the bottom
-  minval <- min(ss[,colnbr])
+  minval <- min(as.numeric(ss[,colnbr]),na.rm=TRUE)
   test <- ss[,colnbr] == minval
   result <- subset(ss[,2], test)
   result <- sort(result)
