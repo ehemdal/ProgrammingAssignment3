@@ -24,11 +24,13 @@ rankhospital <- function(state, outcome, num = "best") {
   ss <- (sd[[state]]) ## get at the data frame at the bottom
   
   # Get the death rates for this state
-  rates <- unique(sort(as.numeric(ss[,colnbr])))
+  ss[,colnbr] <- as.numeric(ss[,colnbr])
+  rates <- (sort(as.numeric(ss[,colnbr])))
   
   # Figure out "best" and "worst" and test num
   if (num == "best") { num <- 1}
   if (num == "worst") {num <- length(rates)}
+  if (num > length(rates)) { return(NA)} # bail out if we are out of range
   if (num <= 0 || !is.numeric(num)) {stop("invalid rank")}
   rank <- rates[num]
   result <- subset(ss[,2], ss[,colnbr] == rank)
