@@ -1,8 +1,8 @@
 rankall <- function(outcome, num = "best") {
   ## Read outcome data
   setwd("C:/git/ProgrammingAssignment3")
-  #d <-read.csv("outcome-of-care-measures.csv",colClasses="character") 
-  d <-read.csv("test.csv",colClasses="character") #start w/out colClasses="character"
+  d <-read.csv("outcome-of-care-measures.csv",colClasses="character") 
+  #d <-read.csv("test.csv",colClasses="character") #start w/out colClasses="character"
   
   ## Check that outcome is valid and get a list of states from the data
   ocname <- c("heart attack" = 11, "heart failure" = 17 ,"pneumonia" = 23)
@@ -10,7 +10,7 @@ rankall <- function(outcome, num = "best") {
   # else {print("OK outcome")}
   
   # check num for "best" and numeric, do "worst" later
-  if (num == "best") { num <- 1}
+  if (num == "best") { count <- 1}
   if (num <= 0) {stop("invalid rank")}
   
   sl <- d[,7]
@@ -27,13 +27,22 @@ rankall <- function(outcome, num = "best") {
   state <- NULL
   for (i in seq(along=states)) {
     #print(i)
-    ss <- (sd[[i]]) ## get at the data frame at the bottom
+    ss <- (sd[[states[i]]]) ## get at the data frame at the bottom
     
     # Get the death rates for this state
     ss[,colnbr] <- as.numeric(ss[,colnbr])
     rates <- (sort(as.numeric(ss[,colnbr])))
-    if (num == "worst") {num <- length(rates)}
-    rank <- rates[num]
+    # set the count right
+    if (num == "best") { count <- 1}
+    if (num == "worst") {count <- length(rates)}
+      else { count <- num }
+    if (count > length(rates)) {
+      # This is the NA case
+      hospital <- c(hospital, "<NA>")
+      state <- c(state, states[i])
+      next
+      } # bail out if we are out of range
+    rank <- rates[count]
     result <- subset(ss[,2], ss[,colnbr] == rank)
     result = sort(result)
     hospital <- c(hospital, result[1])
